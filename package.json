@@ -1,15 +1,12 @@
 {
   "name": "media-socket",
   "displayName": "Media-Socket",
-  "version": "0.0.1",
-  "private": true,
-  "main": "./dist/index.js",
+  "version": "0.0.1-2",
+  "main": "./dist/src/index.js",
   "scripts": {
-    "build": "npx webpack --config webpack.config.js"
+    "build": "tsc && npx webpack --config webpack.config.js && cp dist/bundle.js examples/client/html/bunde.js"
   },
   "dependencies": {
-    "express": "^4.17.3",
-    "express-ws": "^5.0.2",
     "recordrtc": "^5.6.2"
   },
   "devDependencies": {

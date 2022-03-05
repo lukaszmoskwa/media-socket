@@ -16,7 +16,8 @@
     <button id="test">start</button>
   </body>
 
-  <script src="./dist/bundle.js"></script>
+  <!-- Generated automatically after build, check out package.json -->
+  <script src="../html/bunde.js"></script>
   <script>
     const video = document.getElementById("video");
     const button = document.getElementById("test");
@@ -28,7 +29,7 @@
     const recorder = new MediaSocket.Recorder({
       ws,
       recording: {
-        timeSlice: 200,
+        timeSlice: 100,
         media: {
           audio: true,
           video: true,
