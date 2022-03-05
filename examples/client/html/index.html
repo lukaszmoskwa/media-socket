@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <video
+      crossorigin="anonymous"
+      autoplay
+      style="border: 2px solid black"
+      id="video"
+    ></video>
+    <button id="test">start</button>
+  </body>
+
+  <script src="./dist/bundle.js"></script>
+  <script>
+    const video = document.getElementById("video");
+    const button = document.getElementById("test");
+    const ws = new WebSocket("ws://localhost:3000");
+    button.addEventListener("click", () => {
+      start();
+    });
+    // Setting up the recorder
+    const recorder = new MediaSocket.Recorder({
+      ws,
+      recording: {
+        timeSlice: 200,
+        media: {
+          audio: true,
+          video: true,
+        },
+      },
+    });
+    // Setting up the player
+    const player = new MediaSocket.Player({
+      video,
+      ws,
+    });
+
+    async function start() {
+      await recorder.setupRecorder();
+      await player.setupPlayer();
+      recorder.startRecording();
+      player.startPlaying();
+    }
+  </script>
+</html>
