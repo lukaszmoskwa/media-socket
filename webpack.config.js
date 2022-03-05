@@ -1,6 +1,27 @@
 const path = require("path");
 
-module.exports = {
+const nodeConfig = {
+  entry: "./src/index.ts",
+  mode: "none",
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
+  output: {
+    filename: "index.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+};
+
+const browserConfig = {
   entry: "./src/index.ts",
   mode: "none",
   module: {
@@ -22,3 +43,5 @@ module.exports = {
     library: "MediaSocket",
   },
 };
+
+module.exports = [browserConfig, nodeConfig];
