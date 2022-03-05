@@ -7,7 +7,6 @@ app.ws("/:who/:id", bridgeHandler);
 
 app.ws("/", function (ws, req) {
   ws.on("message", function (msg) {
-    console.log(msg);
     ws.send(msg);
   });
 });

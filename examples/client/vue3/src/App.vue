@@ -1,11 +1,28 @@
 <template>
-  <h2>test</h2>
-
-  <video id="video"></video>
-
-  <button @click="startRecording">Start recording</button>
-  <button @click="startPlaying">Start playing</button>
+  <div class="page">
+    <h1>Vue3 Example</h1>
+    <video id="video"></video>
+    <button @click="startRecording">Start recording</button>
+  </div>
 </template>
+
+<style lang="css">
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+video {
+  border: 2px solid black;
+  height: 200px;
+}
+button {
+  margin-top: 20px;
+  border: 2px solid black;
+  padding: 4px 10px;
+}
+</style>
 
 <script>
 import * as MediaSocket from "media-socket";
@@ -20,21 +37,15 @@ export default {
     };
   },
   async mounted() {
-    // TODO: Complete the example
-    console.log(MediaSocket.Player);
     this.ws = new WebSocket("ws://localhost:3000");
-    // this.ws = new WebSocket("ws://localhost:3000/client2/123");
-    // this.ws.onopen = () => {
-    //   this.ws.send("hello");
-    // };
+    this.setupPlayer();
   },
   methods: {
-    async startPlaying() {
+    async setupPlayer() {
       const video = document.getElementById("video");
       this.player = new MediaSocket.Player({
         video,
         ws: this.ws,
-        // wsUrl: "ws://localhost:3000/client2/123",
       });
       await this.player.setupPlayer();
     },

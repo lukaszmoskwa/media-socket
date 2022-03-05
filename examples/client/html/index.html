@@ -6,15 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
+  <body class="page">
+    <h1>HTML example</h1>
     <video
       crossorigin="anonymous"
       autoplay
       style="border: 2px solid black"
       id="video"
     ></video>
-    <button id="test">start</button>
+    <button id="test">Start recording</button>
   </body>
+
+  <style>
+    .page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    video {
+      border: 2px solid black;
+      height: 200px;
+    }
+    button {
+      margin-top: 20px;
+      border: 2px solid black;
+      padding: 4px 10px;
+    }
+  </style>
 
   <!-- Generated automatically after build, check out package.json -->
   <script src="../html/bunde.js"></script>

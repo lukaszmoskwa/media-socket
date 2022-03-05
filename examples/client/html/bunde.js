@@ -100,7 +100,6 @@ var Player = /** @class */ (function () {
                             case 0: return [4 /*yield*/, event.data.arrayBuffer()];
                             case 1:
                                 buffer = _a.sent();
-                                console.log(buffer);
                                 this._sourceBuffer.appendBuffer(buffer);
                                 this._video.play();
                                 return [2 /*return*/];

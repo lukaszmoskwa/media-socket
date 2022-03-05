@@ -45,7 +45,6 @@ export class Player {
   async startPlaying() {
     this._ws.onmessage = async (event) => {
       const buffer = await event.data.arrayBuffer();
-      console.log(buffer);
       this._sourceBuffer.appendBuffer(buffer);
       this._video.play();
     };
