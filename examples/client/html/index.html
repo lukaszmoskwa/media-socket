@@ -14,6 +14,7 @@
       style="border: 2px solid black"
       id="video"
     ></video>
+    <audio autoplay crossorigin="anonymous" id="audio"></audio>
     <button id="test">Start recording</button>
   </body>
 
@@ -36,9 +37,10 @@
   </style>
 
   <!-- Generated automatically after build, check out package.json -->
-  <script src="../html/bunde.js"></script>
+  <script src="../html/bundle.js"></script>
   <script>
     const video = document.getElementById("video");
+    const audio = document.getElementById("audio");
     const button = document.getElementById("test");
     const ws = new WebSocket("ws://localhost:3000");
     button.addEventListener("click", () => {
@@ -47,18 +49,24 @@
     // Setting up the recorder
     const recorder = new MediaSocket.Recorder({
       ws,
-      recording: {
+      recordingOptions: {
         timeSlice: 100,
         media: {
           audio: true,
-          video: true,
+          video: false,
         },
       },
     });
     // Setting up the player
     const player = new MediaSocket.Player({
-      video,
       ws,
+      playingOptions: {
+        element: video, // or audio if you want to pass just the audio
+        media: {
+          audio: true,
+          video: false,
+        },
+      },
     });
 
     async function start() {

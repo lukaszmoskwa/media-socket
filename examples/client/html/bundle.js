@@ -49,26 +49,34 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var Player = /** @class */ (function () {
     function Player(configuration) {
         this.validateConfiguration(configuration);
-        this._video = configuration.video;
+        this._playingOptions = configuration.playingOptions;
         this._ws = configuration.ws || new WebSocket(configuration.wsUrl);
     }
     Player.prototype.setupPlayer = function () {
         return __awaiter(this, void 0, void 0, function () {
             var mediaSource, url, _a;
+            var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         mediaSource = new MediaSource();
                         url = URL.createObjectURL(mediaSource);
                         // 3. Set the video's `src` to the object URL
-                        this._video.src = url;
+                        this._playingOptions.element.src = url;
                         // 4. On the `sourceopen` event, create a `SourceBuffer`
                         _a = this;
                         return [4 /*yield*/, new Promise(function (resolve, reject) {
                                 var getSourceBuffer = function () {
                                     try {
-                                        var sourceBuffer = mediaSource.addSourceBuffer("video/webm; codecs=\"vp9,opus\"");
-                                        resolve(sourceBuffer);
+                                        if (_this._playingOptions.media.video) {
+                                            var sourceBuffer = mediaSource.addSourceBuffer("video/webm; codecs=\"vp9,opus\"");
+                                            resolve(sourceBuffer);
+                                        }
+                                        else {
+                                            // Audio only
+                                            var sourceBuffer = mediaSource.addSourceBuffer("audio/webm; codecs=\"opus");
+                                            resolve(sourceBuffer);
+                                        }
                                     }
                                     catch (e) {
                                         reject(e);
@@ -101,7 +109,7 @@ var Player = /** @class */ (function () {
                             case 1:
                                 buffer = _a.sent();
                                 this._sourceBuffer.appendBuffer(buffer);
-                                this._video.play();
+                                this._playingOptions.element.play();
                                 return [2 /*return*/];
                         }
                     });
@@ -113,14 +121,18 @@ var Player = /** @class */ (function () {
     Player.prototype.stopPlaying = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this._video.pause();
+                this._playingOptions.element.pause();
                 return [2 /*return*/];
             });
         });
     };
     Player.prototype.validateConfiguration = function (configuration) {
-        if (!configuration.video) {
-            throw new Error("Video element must be provided");
+        if (!configuration.playingOptions.element) {
+            throw new Error("The player element must be specified");
+        }
+        if (!configuration.playingOptions.media.audio &&
+            !configuration.playingOptions.media.video) {
+            throw new Error("Either audio or video media option must be provided");
         }
         if (!configuration.ws && !configuration.wsUrl) {
             throw new Error("Either ws or wsUrl must be provided");
@@ -182,21 +194,25 @@ var Recorder = /** @class */ (function () {
     function Recorder(configuration) {
         this.validateConfiguration(configuration);
         this._ws = configuration.ws || new WebSocket(configuration.wsUrl);
-        this._recording = configuration.recording;
+        this._recordingOptions = configuration.recordingOptions;
     }
     Recorder.prototype.setupRecorder = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var stream;
+            var stream, type, mimeType;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, navigator.mediaDevices.getUserMedia(this._recording.media)];
+                    case 0: return [4 /*yield*/, navigator.mediaDevices.getUserMedia(this._recordingOptions.media)];
                     case 1:
                         stream = _a.sent();
+                        type = this._recordingOptions.media.video ? "video" : "audio";
+                        mimeType = this._recordingOptions.media.video
+                            ? "video/webm;codecs=vp9"
+                            : "audio/webm";
                         this._recorder = new recordrtc__WEBPACK_IMPORTED_MODULE_0__.RecordRTCPromisesHandler(stream, {
-                            type: "video",
-                            mimeType: "video/webm;codecs=vp9",
-                            timeSlice: this._recording.timeSlice || 1000,
+                            type: type,
+                            mimeType: mimeType,
+                            timeSlice: this._recordingOptions.timeSlice || 1000,
                             ondataavailable: function (blob) {
                                 _this._ws.send(blob);
                             },
@@ -231,6 +247,10 @@ var Recorder = /** @class */ (function () {
     Recorder.prototype.validateConfiguration = function (configuration) {
         if (!configuration.ws && !configuration.wsUrl) {
             throw new Error("Either ws or wsUrl must be provided");
+        }
+        if (!configuration.recordingOptions.media.audio &&
+            !configuration.recordingOptions.media.video) {
+            throw new Error("Either audio or video media option must be provided");
         }
     };
     return Recorder;

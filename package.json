@@ -1,10 +1,14 @@
 {
   "name": "media-socket",
   "displayName": "Media-Socket",
-  "version": "0.0.1-2",
+  "version": "0.0.2",
   "main": "./dist/src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lykos94/media-socket.git"
+  },
   "scripts": {
-    "build": "tsc && npx webpack --config webpack.config.js && cp dist/bundle.js examples/client/html/bunde.js"
+    "build": "rm -r dist/ && tsc && npx webpack --config webpack.config.js && cp dist/bundle.js examples/client/html/bundle.js"
   },
   "dependencies": {
     "recordrtc": "^5.6.2"

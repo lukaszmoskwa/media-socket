@@ -44,14 +44,20 @@ export default {
     async setupPlayer() {
       const video = document.getElementById("video");
       this.player = new MediaSocket.Player({
-        video,
+        playingOptions: {
+          element: video,
+          media: {
+            video: true,
+            audio: true,
+          },
+        },
         ws: this.ws,
       });
       await this.player.setupPlayer();
     },
     async startRecording() {
       this.recorder = new MediaSocket.Recorder({
-        recording: {
+        recordingOptions: {
           timeSlice: 200,
           media: {
             audio: true,

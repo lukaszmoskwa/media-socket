@@ -1,5 +1,8 @@
 # Media-Socket
 
+![](https://img.shields.io/github/license/Lykos94/media-socket)
+![](https://img.shields.io/npm/v/media-socket)
+
 `media-socket` is a library for sending user media in real time via websocket. The advantage of this library is that it integrates the recording, sending and client-side display of audio and video.
 
 The library makes use of RecordRTC (https://recordrtc.org/) and WebSocket.
@@ -37,7 +40,7 @@ Creating a recorder
 ```js
 const recorder = new MediaSocket.Recorder({
   ws,
-  recording: {
+  recordingOptions: {
     timeSlice: 100,
     media: {
       audio: true,
@@ -52,7 +55,13 @@ Creating a player
 ```js
 const video = document.getElementById("video");
 const player = new MediaSocket.Player({
-  video,
+  playingOptions: {
+    element: video,
+    media: {
+      video: true,
+      audio: true,
+    },
+  },
   ws,
 });
 ```
@@ -62,17 +71,53 @@ In both, `ws` is the WebSocket object initialized previously. If you want to ini
 ```js
 // Example with wsUrl
 const player = new MediaSocket.Player({
-  video,
-  wsUrl,
+  playingOptions: {
+    // ...
+  },
+  wsUrl: "ws://localhost:3000",
 });
 ```
 
 ### Node (Vue, React, ...)
 
-The only difference with the browser example is that you need to import the package
+The only difference with respect to the browser example is that you need to import the package as follows
 
 ```js
 import * as MediaSocket from "media-socket";
+```
+
+## Configuration Types
+
+### Recorder
+
+```ts
+type RecorderConfiguration = {
+  recordingOptions: {
+    timeSlice?: number;
+    media: {
+      audio: boolean;
+      video: boolean;
+    };
+  };
+  ws?: WebSocket; // Use existing WebSocket
+  wsUrl?: string; // Use this url to create a new WebSocket
+};
+```
+
+### Player
+
+```ts
+type PlayerConfiguration = {
+  playingOptions: {
+    element: HTMLVideoElement | HTMLAudioElement;
+    media: {
+      audio: boolean;
+      video: boolean;
+    };
+  };
+  ws?: WebSocket; // Use existing WebSocket
+  wsUrl?: string; // Use this url to create a new WebSocket
+};
 ```
 
 ## Running examples
