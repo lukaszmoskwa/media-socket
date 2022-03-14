@@ -1,8 +1,21 @@
 {
   "name": "media-socket",
   "displayName": "Media-Socket",
-  "version": "0.0.2",
+  "version": "0.0.2-b",
   "main": "./dist/src/index.js",
+  "description": "Stream easily UserMedia audio and video over websocket",
+  "keywords": [
+    "media-socket",
+    "websocket",
+    "websockets",
+    "websockets",
+    "recording audio",
+    "recording video",
+    "streaming video",
+    "streaming audio",
+    "recordrtc"
+  ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Lykos94/media-socket.git"
