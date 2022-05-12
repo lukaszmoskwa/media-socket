@@ -16,7 +16,7 @@ The library is available for browser as compiled bundle or Node applications as 
 Import the `media-socket` bundle as follows:
 
 ```html
-<script src="https://raw.githubusercontent.com/Lykos94/media-socket/master/examples/client/html/bunde.js">
+<script src="https://raw.githubusercontent.com/Lykos94/media-socket/master/examples/client/html/bundle.js">
 ```
 
 ### Node (Vue, React, ...)
